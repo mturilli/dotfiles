@@ -1,0 +1,10 @@
+if [[ -z "$1" ]]; then
+    echo "Usage: mktouch /full/path/to/file"
+    return 1
+fi
+
+local file="$1"
+# This is zsh syntax for dirname. For bash, use: dir="$(dirname "$file")"
+local dir="${file:h}"
+
+mkdir -p "$dir" && touch "$file"

@@ -1,0 +1,10 @@
+theme = "Solarized Dark - Patched"
+font-size = 16
+
+# Palette overrides
+cursor-color = "#839496"
+background = "#002b36"
+foreground = "#839496"
+
+# Swap the foreground and background colors for selection
+selection-invert-fg-bg

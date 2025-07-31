@@ -1,0 +1,2 @@
+# Syntax highlight man pages
+command man "$@" | col -bx | bat --language=man --style=plain --paging=always

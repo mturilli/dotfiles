@@ -1,0 +1,6 @@
+--theme="Solarized (dark)"
+--style=changes,header,numbers
+--paging=auto
+--tabs=4
+--italic-text=always
+--decorations=always

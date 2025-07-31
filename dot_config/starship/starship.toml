@@ -1,0 +1,87 @@
+add_newline = true
+
+# Left prompt
+format = """$os$hostname$directory$character"""
+palette = "solarized_dark"
+
+# Right prompt
+right_format = """$all"""
+command_timeout = 1000
+
+# continuation_prompt = '▶▶ '
+continuation_prompt = '--> '
+
+[os]
+style = 'fg:base1'
+format = "[$symbol]($style)"
+disabled = false
+
+[os.symbols]
+Windows = " "
+Macos = " "
+
+[hostname]
+style = 'fg:green'
+ssh_only = false
+format = '[$ssh_symbol](blue)[$hostname]($style) '
+trim_at = '.'
+disabled = false
+
+[directory]
+style = 'fg:cyan'
+format = '[$path ]($style)'
+truncation_length = 4
+truncation_symbol = '…/'
+truncate_to_repo = false
+
+[directory.substitutions]
+'Documents' = '󰈙'
+'Downloads' = ' '
+'Music' = ' '
+'Pictures' = ' '
+
+[git_branch]
+style = 'fg:violet'
+symbol = ' '
+format = '[$symbol$branch ]($style)'
+
+[fill]
+symbol = ' '
+
+[python]
+style = 'yellow'
+symbol = ' '
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+# pyenv_version_name = true
+# pyenv_prefix = ''
+
+[package]
+style = 'blue'
+format = '[🎁$version]($style) '
+
+[cmd_duration]
+min_time = 500
+format = '[󱑍 $duration](orange)'
+
+[character]
+# success_symbol = "[➜](green)"
+success_symbol = "[->](green)"
+error_symbol = "[✗](red)"
+
+[palettes.solarized_dark]
+base03 = '#002b36'
+base02 = '#073642'
+base01 = '#586e75'
+base00 = '#657b83'
+base0 = '#839496'
+base1 = '#93a1a1'
+base2 = '#eee8d5'
+base3 = '#fdf6e3'
+yellow = '#b58900'
+orange = '#cb4b16'
+red = '#dc322f'
+magenta = '#d33682'
+violet = '#6c71c4'
+blue = '#268bd2'
+cyan = '#2aa198'
+green = '#859900'

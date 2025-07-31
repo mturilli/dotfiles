@@ -1,0 +1,8 @@
+# Git branch fuzzy switcher
+git rev-parse --git-dir > /dev/null 2>&1 || return
+git checkout "$(
+    git branch --all --color=always |
+    grep -v '\->' |
+    sed 's/remotes\///' |
+    fzf --ansi --preview='git log -n 10 --color=always {}' --preview-window=right:70%
+)"

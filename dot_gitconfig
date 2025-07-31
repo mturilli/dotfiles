@@ -1,0 +1,82 @@
+[user]
+    name = Matteo Turilli
+    email = matteo.turilli@gmail.com
+    signingkey = SHA256:rVSMkqMmLuGaP5gvhZwN5qmf8eFpqCl2M+nk24bH2EE
+    github = mturilli
+
+[init]
+    defaultBranch = main
+
+[core]
+    editor = nvim
+    autocrlf = input
+    pager = delta
+    excludesfile = /Users/mturilli/.gitignore_global
+
+[pull]
+    rebase = true
+
+[merge]
+    tool = vimdiff
+
+[diff]
+    tool = vimdiff
+
+[alias]
+    a = add
+    aa = add --all
+    ap = add -p
+    b = branch
+    c = commit
+    ca = commit --amend
+    cl = clone
+    co = checkout
+    cp = cherry-pick
+    d = diff
+    ds = diff --staged
+    l = log --oneline --graph --decorate
+    lp = log -p
+    lg = log --graph --pretty=format:'%C(yellow)%h%C(reset) - %C(cyan)%an%C(reset): %C(white)%s%C(reset) %C(dim)(%cr)%C(reset)'
+    pl = pull
+    ps = push
+    rb = rebase
+    rs = reset
+    st = status -sb
+    tags = tag -l
+    unstage = reset HEAD --
+    wip = commit -am "WIP"
+    hist = log --pretty=format:'%C(auto)%h%d %s %C(blue)[%an]' --graph --date=short
+    last = log -1 HEAD
+
+[credential]
+    helper = osxkeychain
+
+[push]
+    autoSetupRemote = true
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    features = line-numbers decorations
+    whitespace-error-style = 22 reverse
+    navigate = true
+    side-by-side = true
+    syntax-theme = Solarized (dark)
+
+[delta "decorations"]
+    commit-decoration-style = bold yellow box
+    file-style = omit
+    hunk-header-style = line-number syntax
+
+[commit]
+    gpgsign = true
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    program = /usr/bin/ssh-keygen
+
+[tag]
+    gpgsign = true

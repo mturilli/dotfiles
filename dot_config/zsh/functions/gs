@@ -1,0 +1,6 @@
+# Git status with fzf
+git rev-parse --git-dir > /dev/null 2>&1 || return
+git status --short --branch --color=always |
+fzf --ansi --preview='git diff --color=always {}' --preview-window=up:3:hidden:wrap |
+awk '{print $2}' |
+xargs -r git add

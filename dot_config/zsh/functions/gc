@@ -1,0 +1,6 @@
+# Git commit fuzzy search
+git rev-parse --git-dir > /dev/null 2>&1 || return
+git log --oneline --color=always |
+fzf --ansi --preview='echo {}' --preview-window=up:3:hidden:wrap |
+awk '{print $1}' |
+xargs -r git show

@@ -1,0 +1,11 @@
+--hidden
+--glob=!.git/*
+--smart-case
+--colors=match:fg:yellow
+--colors=line:fg:blue
+--colors=path:fg:cyan
+--column
+--line-number
+--heading
+--max-columns=150
+--follow
