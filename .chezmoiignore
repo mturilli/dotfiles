@@ -1,3 +1,33 @@
+# Secrets you should not track
 .config/chezmoi/age.key
+.config/gh/hosts.yml
+.ssh/known_hosts
+.ssh/id_*
+.gnupg/
+.aws/credentials
+.private/
+
+# Machine-specific or OS-generated
 dot_DS_Store
+.DS_Store
+Thumbs.db
+
+# Session or volatile data
+.zsh_history
+.bash_history
+.cache/
+local/
+
+# Editor or plugin junk
+*.swp
+*.swo
+*~
+tags
 lazy-lock.json
+Packer.lock
+undo/
+session/
+
+# Files not meant for tracking
+chezmoi.toml
+chezmoi.yaml
