@@ -1,7 +1,7 @@
 [user]
     name = Matteo Turilli
     email = matteo.turilli@gmail.com
-	signingkey = SHA256:rVSMkqMmLuGaP5gvhZwN5qmf8eFpqCl2M+nk24bH2EE
+    signingkey = SHA256:rVSMkqMmLuGaP5gvhZwN5qmf8eFpqCl2M+nk24bH2EE
     github = mturilli
 
 [init]
@@ -70,10 +70,10 @@
     hunk-header-style = line-number syntax
 
 [commit]
-	gpgsign = false
+    gpgsign = false
 
 [gpg]
-	format = ssh
+    format = ssh
 
 [gpg "ssh"]
     program = /usr/bin/ssh-keygen
