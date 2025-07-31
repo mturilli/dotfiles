@@ -16,3 +16,6 @@ export EZA_COLORS='exfxcxdxbxegedabagacad'  # Custom color scheme for eza
 
 # Brew
 export PATH="/opt/homebrew/opt/man-db/libexec/bin:$PATH"
+
+# Deafault editor
+export EDITOR=nvim

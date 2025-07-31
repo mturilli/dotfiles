@@ -30,3 +30,4 @@ session/
 # Files not meant for tracking
 chezmoi.toml
 chezmoi.yaml
+README.md

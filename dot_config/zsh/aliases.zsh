@@ -42,8 +42,8 @@ alias gd='git diff'
 # Dev Env
 alias serve='python3 -m http.server'
 alias reload='source ~/.zshrc'
-alias editz='nano ~/.zshrc'
-alias editsh='nano ~/.bashrc'
+alias editz='nvim ~/.zshrc'
+alias editsh='nvim ~/.bashrc'
 alias mkd='mkdir -p'
 alias tree='eza --tree'
 
@@ -101,3 +101,8 @@ alias dow="$HOME/Downloads"
 # GH CLI
 alias ghcr-private='gh repo create --private --source=. --push'
 alias ghcr-public='gh repo create --public --source=. --push'
+
+# Editors
+alias v='nvim'
+alias vi='nvim'
+alias vim='nvim'
