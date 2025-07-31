@@ -10,5 +10,5 @@ Includes:
 - Bootstrapped via:
 
 ```bash
-chezmoi init mturilli --apply
+chezmoi init <username> --apply
 ```
