@@ -1,6 +1,5 @@
 # Secrets you should not track
 .config/chezmoi/age.key
-.config/gh/hosts.yml
 .ssh/known_hosts
 .ssh/id_*
 .gnupg/
