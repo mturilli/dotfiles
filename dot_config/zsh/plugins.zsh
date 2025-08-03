@@ -10,6 +10,9 @@ eval "$(zoxide init zsh)"
 # GitHub CLI copilot
 eval "$(gh copilot alias -- zsh)"
 
+# Direnv
+eval "$(direnv hook zsh)"
+
 # Autosuggestions for zsh
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'

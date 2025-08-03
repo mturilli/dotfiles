@@ -8,6 +8,10 @@ fi
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
 ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null
 
+# Completion system
+autoload -Uz compinit
+compinit
+
 # Zsh Configuration files
 [ -f "$HOME/.config/zsh/env.zsh" ] && source "$HOME/.config/zsh/env.zsh"
 [ -f "$HOME/.config/zsh/options.zsh" ] && source "$HOME/.config/zsh/options.zsh"
