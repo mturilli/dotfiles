@@ -1,0 +1,25 @@
+arch: aarch64
+cpu: 8
+memory: 14
+disk: 100
+
+runtime: docker
+
+# Apple Silicon optimizations
+vmType: vz          # use Apple Virtualization.framework
+rosetta: true       # run x86_64 Linux images via Rosetta when needed
+cpu_type: host
+
+# DNS & network
+dns: host           # use macOS resolver
+network: bridged    # enables LAN reachability
+
+# Minimal, targeted mounts
+mounts:
+  - location: "/Users/mturilli/github"
+    writable: true
+    # mountPoint: "/github"     # optional: change mount point if needed
+  - location: "/Users/mturilli/datasets"
+    writable: true
+  - location: "/tmp"
+    writable: true
