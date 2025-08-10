@@ -25,7 +25,8 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 # ZSH_AUTOSUGGEST_CLEAR_WIDGETS=(backward-delete-char backward-kill-word delete-char)
 
 # Syntax highlighting for zsh
-# NOTE: It must be sourced after the prompt is set and after the
+# NOTE: It must be sourced after the prompt is set and after the 
 # zsh-autosuggestions plugin. This is to ensure that the syntax highlighting
 # does not interfere with the prompt.
 [ -f "$HOME/.config/zsh/syntax.zsh" ] && source "$HOME/.config/zsh/syntax.zsh"
+    ZSH_HIGHLIGHT_STYLES[line]='none'   # No underline commands while typing
