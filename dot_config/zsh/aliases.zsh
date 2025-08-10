@@ -1,3 +1,5 @@
+setopt complete_aliases
+
 # File Navigation
 alias ls='eza --group-directories-first --icons=auto --color=always --classify'
 alias ll='eza -l --git --time-style=long-iso --icons=auto'
