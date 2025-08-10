@@ -19,3 +19,7 @@ export PATH="/opt/homebrew/opt/man-db/libexec/bin:$PATH"
 
 # Deafault editor
 export EDITOR=nvim
+
+# Colima and docker containers
+export COLIMA_HOME="$HOME/.config/colima"
+export DOCKER_HOST="unix://${COLIMA_HOME}/default/docker.sock"
