@@ -1,0 +1,44 @@
+# ~/.local/bin/lesswrap
+#!/usr/bin/env bash
+set -euo pipefail
+
+REAL_LESS="${LESS_REAL:-$(command -v less)}"
+
+if [ -t 0 ] || [ "$#" -gt 0 ]; then
+  exec "$REAL_LESS" "$@"
+fi
+
+tmp="$(mktemp -t lessstdin.XXXXXX)"
+trap 'rm -f "$tmp" "${tmp_with_suffix:-}"' EXIT
+cat > "$tmp"
+
+suffix="txt"
+ppid="$(ps -o ppid= -p $$ | tr -d '[:space:]' || true)"
+pcomm="$(ps -o comm= -p "${ppid:-0}" 2>/dev/null | awk '{print $1}' || true)"
+gppid="$(ps -o ppid= -p "${ppid:-0}" | tr -d '[:space:]' || true)"
+gpcomm="$(ps -o comm= -p "${gppid:-0}" 2>/dev/null | awk '{print $1}' || true)"
+parent_line="$pcomm $gpcomm"
+
+case "$parent_line" in
+  *kubectl*|*helm*) suffix="yaml" ;;
+  *jq*)             suffix="json" ;;
+  *man* )           suffix="man"  ;;
+  *git* )           suffix="gitlog" ;;
+esac
+
+if grep -q '^diff --git ' "$tmp"; then
+  suffix="diff"
+elif grep -q '^commit [0-9a-f]\{7,\}' "$tmp"; then
+  suffix="gitlog"
+elif grep -qE '^(apiVersion:|kind:|[A-Za-z0-9_-]+:\s+.+)$' "$tmp"; then
+  suffix="yaml"
+elif grep -q '^{[^}]*}$' "$tmp"; then
+  suffix="json"
+elif grep -q '^<\?xml' "$tmp"; then
+  suffix="xml"
+fi
+
+tmp_with_suffix="${tmp}.${suffix}"
+mv "$tmp" "$tmp_with_suffix"
+
+exec "$REAL_LESS" "$tmp_with_suffix"

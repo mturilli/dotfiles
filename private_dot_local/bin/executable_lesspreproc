@@ -1,0 +1,80 @@
+# ~/.local/bin/lesspreproc
+#!/usr/bin/env bash
+set -euo pipefail
+file="$1"
+
+pick_lang_by_ext() {
+  case "$file" in
+    # diffs / git
+    *.diff|*.patch) echo diff ;;
+    *.gitlog)       echo gitlog ;;
+
+    # data
+    *.json|*.json5|*.ndjson) echo json ;;
+    *.yml|*.yaml)            echo yaml ;;
+    *.toml)                  echo toml ;;
+    *.ini|*.cfg|*.conf)      echo ini ;;
+    *.csv)                   echo csv ;;
+    *.tsv)                   echo tsv ;;
+
+    # markup / docs
+    *.md|*.markdown)         echo markdown ;;
+    *.html|*.htm)            echo html ;;
+    *.xml)                   echo xml ;;
+
+    # code (common)
+    *.sh|*.bash|*.zsh)       echo bash ;;
+    *.py)                    echo python ;;
+    *.rb)                    echo ruby ;;
+    *.pl)                    echo perl ;;
+    *.js)                    echo javascript ;;
+    *.mjs)                   echo javascript ;;
+    *.ts)                    echo typescript ;;
+    *.jsx)                   echo jsx ;;
+    *.tsx)                   echo tsx ;;
+    *.go)                    echo go ;;
+    *.rs)                    echo rust ;;
+    *.java)                  echo java ;;
+    *.c)                     echo c ;;
+    *.h)                     echo c ;;
+    *.cc|*.cpp|*.cxx|*.hpp)  echo cpp ;;
+    *.cs)                    echo csharp ;;
+    *.php)                   echo php ;;
+    *.R)                     echo r ;;
+
+    # config / build / containers
+    *Dockerfile|*/Dockerfile) echo docker ;;
+    *Makefile|*/Makefile)     echo make ;;
+    *.service|*.socket|*.target) echo systemd ;;
+    *.gradle|*.gradle.kts)    echo groovy ;;
+
+    # logs & misc
+    *.log)                   echo log ;;
+    *.man)                   echo man ;;
+    *.txt)                   echo "" ;;
+    *)                       echo "" ;;
+  esac
+}
+
+pick_lang_by_heuristic() {
+  # only run cheap checks (the file may be large)
+  if head -n1 "$file" | grep -q '^#!.*sh'; then echo bash && return; fi
+  if grep -qE '^diff --git ' "$file"; then echo diff && return; fi
+  if grep -qE '^commit [0-9a-f]{7,}$' "$file"; then echo gitlog && return; fi
+  if grep -qE '^\s*{\s*".*":' "$file"; then echo json && return; fi
+  if grep -qE '^(apiVersion:|kind:|[A-Za-z0-9_-]+:\s+.+)$' "$file"; then echo yaml && return; fi
+  if grep -qE '^<\?xml' "$file"; then echo xml && return; fi
+  if grep -qE '^(# |\* |\d+\. )' "$file"; then echo markdown && return; fi
+  echo ""
+}
+
+lang="$(pick_lang_by_ext)"
+if [ -z "$lang" ]; then
+  lang="$(pick_lang_by_heuristic)"
+fi
+
+if [ -n "$lang" ]; then
+  exec bat -l "$lang" --paging=never --color=always --style=plain "$file"
+else
+  exec bat --paging=never --color=always --style=plain "$file"
+fi

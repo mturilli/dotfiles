@@ -1,0 +1,7 @@
+#autoload
+
+# Call our stdin-aware wrapper. We pass through any args.
+# The wrapper itself must call the *real* less via $LESS_REAL to avoid recursion. REMEMBER: export $LESS_REAL in ~/.config/zsh/env.zsh!
+less() {
+    "$HOME/.local/bin/lesswrap" "$@"
+}
