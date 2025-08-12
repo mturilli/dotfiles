@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Chezmoi script ~/.dotfiles/scripts/run_once_install-brew-packages.sh.tmpl
+# Chezmoi script ~/.dotfiles/run_once_install-brew-packages.darwin.sh.tmpl
 # run_once_ prefix means chezmoi will run it only when using apply on a new
 # machine.
 
@@ -18,7 +18,7 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 # Install packages from Brewfile
-BREWFILE="{{ .chezmoi.homeDir }}/.config/brew/brewfile"
+BREWFILE="$HOME/.config/brew/brewfile"
 if [ -f "$BREWFILE" ]; then
     echo "Installing packages from $BREWFILE..."
     brew bundle --file="$BREWFILE"
