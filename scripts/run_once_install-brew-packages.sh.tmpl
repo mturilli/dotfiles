@@ -1,0 +1,28 @@
+# ~/.dotfiles/scripts/run_once_install-brew-packages.sh.tml
+#!/bin/bash
+
+# Chezmoi script
+# run_once_ prefix means chezmoi will run it only when using apply on a new
+# machine.
+
+# Install Homebrew if not installed
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    # Set up brew in PATH for current session
+    if [ -d "/opt/homebrew/bin" ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"   # Apple Silicon
+    elif [ -d "/usr/local/bin" ]; then
+        eval "$(/usr/local/bin/brew shellenv)"      # Intel macOS
+    fi
+fi
+
+# Install packages from Brewfile
+BREWFILE="{{ .chezmoi.homeDir }}/.config/brew/brewfile"
+if [ -f "$BREWFILE" ]; then
+    echo "Installing packages from $BREWFILE..."
+    brew bundle --file="$BREWFILE"
+else
+    echo "No Brewfile found at $BREWFILE"
+fi
