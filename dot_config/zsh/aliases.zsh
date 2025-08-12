@@ -13,8 +13,8 @@ alias ~='cd ~'
 alias c='clear'
 
 # File Preview & Search
-alias cat='bat'
-alias grep='rg'
+# alias cat='bat'
+# alias grep='rg'
 alias search='rg'
 # alias f='rg --files | fzf' # Replaced by fzf file search
 # alias ff='rg --no-heading --line-number' # Replaced by fzf file search

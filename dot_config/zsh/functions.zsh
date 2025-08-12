@@ -2,4 +2,4 @@
 fpath=(~/.config/zsh/functions $fpath)
 
 # Enable autoloading for all functions in that directory
-autoload -Uz cdf ff fsearch gb gc gs man mktouch
+autoload -Uz cdf ff fsearch gb gc gs man mktouch less
