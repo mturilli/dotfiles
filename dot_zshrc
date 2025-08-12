@@ -3,16 +3,15 @@
 if ! pgrep -u "$USER" ssh-agent > /dev/null; then
     eval "$(ssh-agent -s)"
 fi
+
 # Add SSH keys to the agent
 # Use --apple-use-keychain for macOS to store passphrase in keychain
 ssh-add --apple-use-keychain ~/.ssh/id_ed25519 2>/dev/null
 ssh-add --apple-use-keychain ~/.ssh/id_rsa 2>/dev/null
 
-# Completion system
-autoload -Uz compinit
-compinit
-
 # Zsh Configuration files
+[ -f "$HOME/.config/zsh/autoload.zsh" ] && source "$HOME/.config/zsh/autoload.zsh"
+[ -f "$HOME/.config/zsh/bindkey.zsh" ] && source "$HOME/.config/zsh/bindkey.zsh"
 [ -f "$HOME/.config/zsh/env.zsh" ] && source "$HOME/.config/zsh/env.zsh"
 [ -f "$HOME/.config/zsh/options.zsh" ] && source "$HOME/.config/zsh/options.zsh"
 [ -f "$HOME/.config/zsh/aliases.zsh" ] && source "$HOME/.config/zsh/aliases.zsh"

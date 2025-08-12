@@ -8,3 +8,6 @@ foreground = "#839496"
 
 # Swap the foreground and background colors for selection
 selection-invert-fg-bg
+
+# Use Alt-left as Meta key
+macos-option-as-alt = left
