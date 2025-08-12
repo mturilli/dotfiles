@@ -1,5 +1,8 @@
-# ~/.local/bin/lesswrap
 #!/usr/bin/env bash
+
+# Less wrapper for stdin input
+# ~/.local/bin/lesswrap
+
 set -euo pipefail
 
 REAL_LESS="${LESS_REAL:-$(command -v less)}"

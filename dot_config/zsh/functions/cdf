@@ -1,3 +1,5 @@
+#autoload
+
 # Directory switcher (fd + tree preview)
 local dir
 dir=$(fd --type d --hidden --exclude .git | fzf --preview 'eza --tree --color=always {} | head -100') && cd "$dir"
