@@ -1,58 +1,67 @@
-# History Configuration
-export HISTFILE=~/.zsh_history  # Path to history file
-export HISTSIZE=1000000         # Number of commands to remember in the session
-export HISTFILESIZE=1000000     # Maximum number of lines in the history file
-export SAVEHIST=1000000         # Number of lines to save in history file
+# XDG base directories
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 
-# Starship
-export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
+mkdir -p "$XDG_STATE_HOME/zsh" "$XDG_CACHE_HOME/zsh"
 
-# Ripgrep
-export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/config"
+# History and completion state
+export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTSIZE=1000000
+export SAVEHIST=1000000
+export ZSH_COMPDUMP="$XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION"
 
-# Eza
-export EZA_TIME_STYLE='long-iso'  # Use long ISO format for timestamps
-export EZA_COLORS='exfxcxdxbxegedabagacad'  # Custom color scheme for eza
+# Tool configuration
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+export COLIMA_HOME="$XDG_CONFIG_HOME/colima"
 
-# Brew
-export PATH="/opt/homebrew/opt/man-db/libexec/bin:$PATH"
+# Keep PATH ordered and duplicate-free. Nonexistent entries are harmless and
+# allow the same configuration to work before and after tools are installed.
+typeset -U path PATH
+path=(
+    "$XDG_DATA_HOME/bin"
+    "$HOME/.local/bin"
+    "$HOME/bin"
+    /opt/homebrew/bin
+    /opt/homebrew/sbin
+    /opt/homebrew/opt/openjdk@21/bin
+    "${path[@]}"
+)
 
-# Deafault editor
-export EDITOR=nvim
+# Java 21, when installed
+if [[ -x /usr/libexec/java_home ]]; then
+    _java_home=$(/usr/libexec/java_home -v 21 2>/dev/null) || _java_home=""
+    if [[ -n "$_java_home" ]]; then
+        export JAVA_HOME="$_java_home"
+        export CPPFLAGS="-I$JAVA_HOME/include${CPPFLAGS:+ $CPPFLAGS}"
+        path=("$JAVA_HOME/bin" "${path[@]}")
+    fi
+    unset _java_home
+fi
 
-# Colima and docker containers
-export COLIMA_HOME="$HOME/.config/colima"
-export DOCKER_HOST="unix://${COLIMA_HOME}/default/docker.sock"
+# Editor
+if (( $+commands[nvim] )); then
+    export EDITOR=nvim
+    export VISUAL=nvim
+elif (( $+commands[vim] )); then
+    export EDITOR=vim
+    export VISUAL=vim
+else
+    export EDITOR=nano
+    export VISUAL=nano
+fi
 
-# Less
-# NOTE: We want to have both syntax highlighting (not coloring) and editing
-# capabilities in less for both files and piped input. This led me down a
-# rabbithole of aliases to bat, wrappers, and preprocessors. Not elegant,
-# likely not worth it.
-#
-# Arguments for less
-# --incsearch   incremental search, showing matches as you type
-# --LONG-PROMPT display a long, informative prompt
-# -F    quit if output fits on one screen
-# -R    interpret raw ANSI colors (required for bat highlighting)
-# -S    chop long lines instead of wrapping
-# -i    case-insensitive search unless uppercase letters are used
-# -x4   set tab stops every 4 columns
-# -w    briefly highlight first “new” line after a movement
-export LESS="--incsearch --LONG-PROMPT -F -R -S -i -x4 -w"
+# Pagers. `man` is colorized once; regular paging stays predictable.
+export LESS='-R -F -i -S -x4 -w'
 export LESSHISTFILE=-
-export LESSKEYIN="$HOME/.config/less/lesskey"  # compiled keymap
-export LESS_REAL="$(command -v less)"   # real less binary
-export LESSOPEN="| ~/.local/bin/lesspreproc %s" # preprocessor for less
+export PAGER=less
+export MANPAGER='sh -c "col -bx | bat -plman"'
 
-# Pagers
-export PAGER="$HOME/.local/bin/lesswrap"    # wrapper for less
-export GIT_PAGER="$HOME/.local/bin/lesswrap" # wrapper for less
-
-# Man pages
-# Use bat to render man pages, then page with less
-# col -bx   strips the backspace overstrike formatting that man uses
-# -l man    tells bat to use its manpage syntax
-# --paging=always   keeps paging
-# -p        removes bat’s header/ruler
-export MANPAGER='sh -c "col -bx | bat -l man --paging=always -p"'
+# FZF defaults. File previews are scoped to file selection so history search
+# does not try to interpret commands as filenames.
+export FZF_DEFAULT_OPTS='--height=40% --layout=reverse --border --color=fg:#839496,bg:#002b36,preview-bg:#073642 --color=prompt:#2aa198,pointer:#b58900,marker:#d33682,info:#859900'
+export FZF_CTRL_T_OPTS="--walker-skip=.git,node_modules,target,.venv --preview 'bat --style=numbers --color=always --line-range=:300 -- {}' --preview-window=right:60%"
+export FZF_ALT_C_OPTS="--walker-skip=.git,node_modules,target,.venv --preview 'eza --tree --level=2 --color=always -- {}' --preview-window=right:60%"

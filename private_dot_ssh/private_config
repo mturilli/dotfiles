@@ -1,0 +1,10 @@
+Include ~/.config/colima/ssh_config
+
+Host three.radical-project.org
+  ForwardAgent yes
+  AddKeysToAgent yes
+
+Host *
+  IgnoreUnknown UseKeychain
+  AddKeysToAgent yes
+  UseKeychain yes

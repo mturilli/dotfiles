@@ -1,15 +1,31 @@
 add_newline = true
 
-# Left prompt
-format = """$os$hostname$directory$character"""
+format = """
+$os\
+$hostname\
+$directory\
+$git_branch\
+$git_state\
+$git_status\
+$git_commit\
+$python\
+$nodejs\
+$rust\
+$golang\
+$docker_context\
+$package\
+$cmd_duration\
+$jobs\
+$battery\
+$time\
+$line_break\
+$character"""
+
 palette = "solarized_dark"
 
-# Right prompt
-right_format = """$all"""
-command_timeout = 1000
-
-# continuation_prompt = '▶▶ '
-continuation_prompt = '--> '
+# Increase timeout for better reliability
+command_timeout = 3000
+scan_timeout = 30
 
 [os]
 style = 'fg:base1'
@@ -17,56 +33,142 @@ format = "[$symbol]($style)"
 disabled = false
 
 [os.symbols]
-Windows = " "
-Macos = " "
+Windows = "󰍲 "
+Macos = "󰀵 "
+Linux = "󰌽 "
 
 [hostname]
-style = 'fg:green'
-ssh_only = false
-format = '[$ssh_symbol](blue)[$hostname]($style) '
+style = 'fg:green bold'
+ssh_only = true
+format = '[󰒋 $hostname]($style) '
 trim_at = '.'
 disabled = false
 
 [directory]
-style = 'fg:cyan'
-format = '[$path ]($style)'
-truncation_length = 4
+style = "fg:cyan bold"
+truncation_length = 5
 truncation_symbol = '…/'
 truncate_to_repo = false
+home_symbol = '󰋜 '
+use_logical_path = true
+read_only = '󰌾 '
+read_only_style = 'red'
 
 [directory.substitutions]
-'Documents' = '󰈙'
-'Downloads' = ' '
-'Music' = ' '
-'Pictures' = ' '
+'Documents' = '󰈙 '
+'Downloads' = '󰉍 '
+'Music' = '󰝚 '
+'Pictures' = '󰉏 '
+'Desktop' = '󰇄 '
+'.config' = '󰒓 '
+'~' = '󰋜 '
 
 [git_branch]
-style = 'fg:violet'
-symbol = ' '
-format = '[$symbol$branch ]($style)'
+style = "fg:violet bold"
+symbol = "󰘬 "
+truncation_length = 20
+truncation_symbol = '…'
 
-[fill]
-symbol = ' '
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+cherry_pick = '[󰊢 CHERRY-PICK](bold red)'
+rebase = '[󰑖 REBASE](bold yellow)'
+merge = '[󰘭 MERGE](bold blue)'
+revert = '[󰌑 REVERT](bold cyan)'
+bisect = '[󰆕 BISECT](bold green)'
+
+[git_status]
+style = "fg:red"
+format = '([$all_status$ahead_behind]($style) )'
+conflicted = '󰞇 '
+ahead = '󰶣 ${count}'
+behind = '󰶡 ${count}'
+diverged = '󰘓 ${ahead_count}󰶣 ${behind_count}󰶡 '
+untracked = '󰓎 ${count}'
+stashed = '󰆔 ${count}'
+modified = '󰏫 ${count}'
+staged = '󰸩 ${count}'
+renamed = '󰕍 ${count}'
+deleted = '󰧧 ${count}'
+
+[git_commit]
+commit_hash_length = 8
+style = 'bold yellow'
+format = '[\($hash$tag\)]($style) '
+only_detached = true
 
 [python]
-style = 'yellow'
-symbol = ' '
-format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
-# pyenv_version_name = true
-# pyenv_prefix = ''
+style = "fg:yellow bold"
+symbol = "󰌠 "
+format = '[$symbol${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+pyenv_version_name = true
+pyenv_prefix = 'pyenv '
+
+[nodejs]
+style = "fg:green bold"
+symbol = "󰎙 "
+format = '[$symbol($version )]($style)'
+
+[rust]
+style = 'fg:red bold'
+symbol = '󱘗 '
+format = '[$symbol($version )]($style)'
+
+[golang]
+style = 'fg:cyan bold'
+symbol = '󰟓 '
+format = '[$symbol($version )]($style)'
+
+[docker_context]
+style = 'fg:blue bold'
+symbol = '󰡨 '
+format = '[$symbol$context ]($style)'
+only_with_files = true
 
 [package]
-style = 'blue'
-format = '[🎁$version]($style) '
+style = 'fg:blue bold'
+symbol = '󰏗 '
+format = '[$symbol$version ]($style)'
+display_private = false
 
 [cmd_duration]
-min_time = 500
-format = '[󱑍 $duration](orange)'
+min_time = 2000
+style = 'fg:orange bold'
+format = '[󰔟 $duration]($style) '
+
+[jobs]
+style = 'fg:blue bold'
+symbol = '󰜎 '
+format = '[$symbol$number]($style) '
+
+[battery]
+full_symbol = '󰁹 '
+charging_symbol = '󰂄 '
+discharging_symbol = '󰁾 '
+format = '[$symbol$percentage]($style) '
+
+[[battery.display]]
+threshold = 20
+style = 'fg:red bold'
+
+[[battery.display]]
+threshold = 50
+style = 'fg:yellow bold'
+
+[[battery.display]]
+threshold = 100
+style = 'fg:green bold'
+
+[time]
+disabled = false
+style = 'fg:base01'
+format = '[󰅐 $time]($style) '
+time_format = '%H:%M'
+utc_time_offset = 'local'
 
 [character]
-# success_symbol = "[➜](green)"
-success_symbol = "[->](green)"
-error_symbol = "[✗](red)"
+success_symbol = "[󰅂](fg:green bold)"
+error_symbol = "[󰅂](fg:red bold)"
 
 [palettes.solarized_dark]
 base03 = '#002b36'
