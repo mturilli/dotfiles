@@ -18,7 +18,7 @@ if ! command -v brew >/dev/null 2>&1; then
 fi
 
 # Install packages from Brewfile
-BREWFILE="$HOME/.config/brew/brewfile"
+BREWFILE="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 if [ -f "$BREWFILE" ]; then
     echo "Installing packages from $BREWFILE..."
     brew bundle --file="$BREWFILE"

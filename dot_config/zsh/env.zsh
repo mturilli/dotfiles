@@ -18,18 +18,32 @@ export RIPGREP_CONFIG_PATH="$XDG_CONFIG_HOME/ripgrep/config"
 export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
 export COLIMA_HOME="$XDG_CONFIG_HOME/colima"
 
-# Keep PATH ordered and duplicate-free. Nonexistent entries are harmless and
-# allow the same configuration to work before and after tools are installed.
+# Keep PATH ordered and duplicate-free. Detect Homebrew without spawning a
+# process so non-login shells remain portable and fast.
 typeset -U path PATH
 path=(
     "$XDG_DATA_HOME/bin"
     "$HOME/.local/bin"
     "$HOME/bin"
-    /opt/homebrew/bin
-    /opt/homebrew/sbin
-    /opt/homebrew/opt/openjdk@21/bin
     "${path[@]}"
 )
+
+if [[ -z "${HOMEBREW_PREFIX:-}" ]]; then
+    if [[ -x /opt/homebrew/bin/brew ]]; then
+        export HOMEBREW_PREFIX=/opt/homebrew
+    elif [[ -x /usr/local/bin/brew ]]; then
+        export HOMEBREW_PREFIX=/usr/local
+    fi
+fi
+
+if [[ -n "${HOMEBREW_PREFIX:-}" ]]; then
+    path=(
+        "$HOMEBREW_PREFIX/bin"
+        "$HOMEBREW_PREFIX/sbin"
+        "$HOMEBREW_PREFIX/opt/openjdk@21/bin"
+        "${path[@]}"
+    )
+fi
 
 # Java 21, when installed
 if [[ -x /usr/libexec/java_home ]]; then
