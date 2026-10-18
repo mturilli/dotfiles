@@ -1,6 +1,7 @@
-# Runtime manager
-if (( $+commands[pyenv] )); then
-    eval "$(pyenv init - zsh)"
+# Python: uv manages interpreters and per-project .venv environments.
+if [[ -t 0 && -t 1 ]] && (( $+commands[uv] )); then
+    eval "$(uv generate-shell-completion zsh)"
+    eval "$(uvx --generate-shell-completion zsh)"
 fi
 
 # FZF's supported key bindings and completion integration.

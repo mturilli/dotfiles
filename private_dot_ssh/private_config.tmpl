@@ -1,0 +1,23 @@
+Include {{ .chezmoi.homeDir }}/.colima/ssh_config
+
+Include ~/.config/colima/ssh_config
+
+Host three.radical-project.org
+  ForwardAgent yes
+  AddKeysToAgent yes
+
+Host *
+  IgnoreUnknown UseKeychain
+  AddKeysToAgent yes
+  UseKeychain yes
+
+Host colossus
+  HostName 90.166.9.105
+  User mturilli
+  IdentityFile ~/.ssh/id_ed25519
+
+Host rust
+  HostName 10.205.20.10
+  User mturilli
+  ProxyJump colossus
+  IdentityFile ~/.ssh/id_ed25519

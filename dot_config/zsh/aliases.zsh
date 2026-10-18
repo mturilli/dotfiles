@@ -1,6 +1,6 @@
 # Listings
 if (( $+commands[eza] )); then
-    alias ls='eza --group-directories-first --icons=auto --color=auto --classify=auto'
+    alias ls='/bin/ls -G'
     alias ll='eza -l --git --time-style=long-iso --icons=auto'
     alias la='eza -la --sort=newest --git --time-style=long-iso --icons=auto'
     alias lt='eza -lT --git --level=2 --icons=auto'

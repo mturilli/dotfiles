@@ -13,8 +13,3 @@ if [[ -n "$_brew_bin" ]]; then
     eval "$("$_brew_bin" shellenv)"
 fi
 unset _brew_bin
-
-# Make pyenv-managed interpreters available to login and non-interactive shells.
-if (( $+commands[pyenv] )); then
-    eval "$(pyenv init --path)"
-fi

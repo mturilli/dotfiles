@@ -14,3 +14,6 @@ for _zsh_config_file in "${_zsh_config_files[@]}"; do
 done
 
 unset _zsh_config_file _zsh_config_files
+
+# Colima VM holding the QuizGen AMC exam image (created with XDG paths).
+export COLIMA_HOME="$HOME/.config/colima"

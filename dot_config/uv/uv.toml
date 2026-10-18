@@ -1,0 +1,5 @@
+# uv user configuration (~/.config/uv/uv.toml), managed by chezmoi.
+# Use only uv-managed CPython builds, never Homebrew/system Python, so every
+# project resolves the same interpreter everywhere. Missing versions are
+# downloaded automatically on first use.
+python-preference = "only-managed"
