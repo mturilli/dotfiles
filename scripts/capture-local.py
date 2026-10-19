@@ -16,7 +16,7 @@ def main():
         raise SystemExit("This checkout is not the configured chezmoi source directory")
     targets = [home / name for name in [
         ".zshrc", ".zprofile", ".config/git/config", ".config/git/ignore",
-        ".ssh/config", ".config/uv/uv.toml", ".config/homebrew/Brewfile",
+        ".ssh/config", ".config/uv/uv.toml", ".config/ghostty/config",
     ]]
     targets += sorted((home / ".config/zsh").glob("*.zsh"))
     missing = [str(p) for p in targets if not p.is_file()]
@@ -43,6 +43,16 @@ def main():
         if p.read_bytes() != before:
             raise SystemExit("A live file changed during capture; review before committing")
     run("chezmoi", "verify", *map(str, targets))
+    # The Brewfile is an explicitly maintained destination package selection.
+    # Do not replace it with an older installed/live source-Mac list.
+    private_targets = [home / "Library/Application Support/Code/User" / name
+                       for name in ["settings.json", "mcp.json", "chatLanguageModels.json",
+                                    "keybindings.json", "tasks.json"]]
+    private_targets += sorted((home / "Library/Application Support/Code/User/snippets").glob("*"))
+    private_targets = [p for p in private_targets if p.is_file()]
+    if private_targets:
+        run("chezmoi", "add", "--encrypt", *map(str, private_targets))
+        run("chezmoi", "verify", *map(str, private_targets))
     print("Captured and verified local settings. Review the source diff before committing.")
     print("No live files were applied, and nothing was pulled, committed or pushed.")
 

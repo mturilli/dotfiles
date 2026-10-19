@@ -61,10 +61,19 @@ brew "keith/formulae/reminders-cli", trusted: true
 brew "teamookla/speedtest/speedtest", trusted: true
 
 cask "finetune"
+cask "chatgpt"
+cask "claude"
+cask "claude-code"
+cask "codex"
 cask "ghostty"
+cask "lastpass"
 cask "prince"
 cask "visual-studio-code"
 cask "zoom"
+
+# Preserve manually installed matching fonts; install them on a clean Mac.
+cask "font-fira-code" unless File.exist?(File.expand_path("~/Library/Fonts/FiraCode-Regular.ttf"))
+cask "font-fira-code-nerd-font" unless File.exist?(File.expand_path("~/Library/Fonts/FiraCodeNerdFontMono-Regular.ttf"))
 
 vscode "aaron-bond.better-comments"
 vscode "alefragnani.project-manager"

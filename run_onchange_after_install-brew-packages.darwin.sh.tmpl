@@ -1,0 +1,14 @@
+{{ if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+set -eu
+# Brewfile hash: {{ include "dot_config/homebrew/Brewfile" | sha256sum }}
+if [ -x /opt/homebrew/bin/brew ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -x /usr/local/bin/brew ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+else
+    echo "Install Homebrew first with scripts/bootstrap-mac.sh --apply." >&2
+    exit 1
+fi
+brew bundle --no-upgrade --file="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
+{{ end -}}
