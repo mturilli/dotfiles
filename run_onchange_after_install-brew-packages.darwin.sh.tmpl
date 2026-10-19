@@ -2,6 +2,7 @@
 #!/bin/bash
 set -eu
 # Brewfile hash: {{ include "dot_config/homebrew/Brewfile" | sha256sum }}
+# Rewrap archive hash: {{ include "private_dot_local/share/mac-bootstrap/encrypted_private_rewrap-17.8.0.vsix.age" | sha256sum }}
 if [ -x /opt/homebrew/bin/brew ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
 elif [ -x /usr/local/bin/brew ]; then
@@ -10,5 +11,26 @@ else
     echo "Install Homebrew first with scripts/bootstrap-mac.sh --apply." >&2
     exit 1
 fi
+# LastPass's vendor Mac app currently requires Rosetta on Apple Silicon.
+if [ "$(uname -m)" = arm64 ] && ! /usr/sbin/pkgutil --pkg-info com.apple.pkg.RosettaUpdateAuto >/dev/null 2>&1; then
+    /usr/sbin/softwareupdate --install-rosetta
+fi
+# Restore the known installed extension before Bundle attempts its unsigned
+# marketplace release. This is a local VSIX import, with global signature
+# verification left enabled. The vendor's license is retained in the archive.
+brew install --cask visual-studio-code
+codebin='/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code'
+if ! "$codebin" --list-extensions | /usr/bin/grep -Fxq stkb.rewrap; then
+    "$codebin" --install-extension "$HOME/.local/share/mac-bootstrap/rewrap-17.8.0.vsix"
+fi
+# Use OpenAI's official standalone distribution. The Homebrew cask's binary
+# stalled at startup on the M2; the same-version standalone distribution passed.
+if [ ! -x "$HOME/.local/bin/codex" ]; then
+    install_dir=$(mktemp -d)
+    trap 'rm -rf "$install_dir"' EXIT
+    curl -fsSL https://chatgpt.com/codex/install.sh -o "$install_dir/codex-install.sh"
+    /bin/sh "$install_dir/codex-install.sh"
+fi
+"$HOME/.local/bin/codex" --version
 brew bundle --no-upgrade --file="${XDG_CONFIG_HOME:-$HOME/.config}/homebrew/Brewfile"
 {{ end -}}

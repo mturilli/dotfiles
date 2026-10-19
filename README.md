@@ -48,7 +48,9 @@ installer when needed, Homebrew, chezmoi and age; backs up existing managed
 configuration; initializes this source checkout; applies the settings; installs
 the declared tools, apps and VS Code extensions; and verifies the result.
 The package selection includes Ghostty, VS Code, LastPass, ChatGPT (including
-Codex), Codex CLI, Claude desktop and Claude Code CLI. Matching Fira Code fonts
+Codex), Claude desktop and Claude Code CLI. Codex CLI uses OpenAI's official
+standalone installer because the Homebrew cask's binary stalled on this M2,
+while the same-version official standalone distribution passed. Matching Fira Code fonts
 are installed when they are not already present. Existing matching manually
 installed font files are preserved. Package versions are not pinned.
 
@@ -88,11 +90,13 @@ setting references a public-key file at its configured path; authentication and
 signing registrations are separate. Git's global automatic commit signing is
 currently disabled, so copying configuration alone does not establish signing.
 
-Some old VS Code marketplace extensions can fail signature verification. Do not
-disable signature checks globally. The current M2 setup required importing the
-already-installed Rewrap 17.8.0 copy from the primary Mac. That private local VSIX
-is not hosted in this public repository; a clean rebuild may need a separately
-verified local copy. Such a failure must be reported, not silently called success.
+The current M2 setup required importing the already-installed Rewrap 17.8.0
+copy from the primary Mac because its marketplace package failed signature
+verification. That local VSIX, including the vendor license, is stored with age
+encryption. The package hook installs it before reconciling the extension list
+on a clean destination. Global signature checks remain enabled. LastPass
+currently needs Rosetta on Apple Silicon; the hook installs it when missing,
+with Apple's interactive license prompt on a fresh machine.
 
 UV prefers its own managed Python builds and downloads missing versions on use.
 Project environments/dependencies are rebuilt from each project's configuration;
