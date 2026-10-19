@@ -25,6 +25,7 @@ if ! "$codebin" --list-extensions | /usr/bin/grep -Fxq stkb.rewrap; then
 fi
 # Use OpenAI's official standalone distribution. The Homebrew cask's binary
 # stalled at startup on the M2; the same-version standalone distribution passed.
+export PATH="$HOME/.local/bin:$PATH"
 if [ ! -x "$HOME/.local/bin/codex" ]; then
     install_dir=$(mktemp -d)
     trap 'rm -rf "$install_dir"' EXIT
